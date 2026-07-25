@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { apiClient } from "../../lib/apiClient";
 import type { LogoWatermarkConfig, Preset, TextWatermarkConfig } from "../../types/watermark";
+import buttons from "../../styles/buttons.module.css";
 import styles from "./SavePresetControls.module.css";
 
 interface SavePresetControlsProps {
@@ -63,7 +64,11 @@ export function SavePresetControls({ text, logo, onSaved }: SavePresetControlsPr
           onChange={(e) => setName(e.target.value)}
           maxLength={80}
         />
-        <button onClick={handleSave} disabled={!name || !hasContent || logoPending || saving}>
+        <button
+          className={`${buttons.btn} ${buttons.btnPrimary} ${buttons.btnSmall}`}
+          onClick={handleSave}
+          disabled={!name || !hasContent || logoPending || saving}
+        >
           {saving ? "Saving…" : "Save preset"}
         </button>
       </div>

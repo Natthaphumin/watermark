@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "../components/layout/AuthForm.module.css";
 import { useAuth } from "../hooks/useAuth";
 import { ApiError } from "../lib/apiClient";
+import buttons from "../styles/buttons.module.css";
 
 export function LoginPage() {
   const { login } = useAuth();
@@ -51,7 +52,11 @@ export function LoginPage() {
           />
         </label>
         {error && <p className={styles.error}>{error}</p>}
-        <button className={styles.submit} type="submit" disabled={submitting}>
+        <button
+          className={`${buttons.btn} ${buttons.btnPrimary} ${buttons.btnFull}`}
+          type="submit"
+          disabled={submitting}
+        >
           {submitting ? "Logging in…" : "Log in"}
         </button>
       </form>

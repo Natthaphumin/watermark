@@ -11,6 +11,7 @@ import { useWatermarkCanvas } from "../hooks/useWatermarkCanvas";
 import { apiClient } from "../lib/apiClient";
 import { loadImage } from "../lib/canvasRender";
 import type { Logo, Preset } from "../types/watermark";
+import buttons from "../styles/buttons.module.css";
 import styles from "./EditorPage.module.css";
 
 export function EditorPage() {
@@ -113,14 +114,23 @@ export function EditorPage() {
               onSelectSavedLogo={handleSelectSavedLogo}
             />
             {logoFile && user && (
-              <button onClick={handleSaveLogoToLibrary} disabled={savingLogo}>
+              <button
+                className={`${buttons.btn} ${buttons.btnSecondary} ${buttons.btnSmall}`}
+                onClick={handleSaveLogoToLibrary}
+                disabled={savingLogo}
+              >
                 {savingLogo ? "Saving logo…" : "Save this logo to your library"}
               </button>
             )}
 
             <div className={styles.actions}>
               <ExportButton state={state} />
-              <button onClick={() => replaceImageInputRef.current?.click()}>Change photo</button>
+              <button
+                className={`${buttons.btn} ${buttons.btnSecondary}`}
+                onClick={() => replaceImageInputRef.current?.click()}
+              >
+                Change photo
+              </button>
               <input
                 ref={replaceImageInputRef}
                 type="file"

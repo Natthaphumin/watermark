@@ -3,6 +3,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { apiClient } from "../../lib/apiClient";
 import { canvasToBlob, renderWatermarkedImage } from "../../lib/canvasRender";
 import type { WatermarkState } from "../../hooks/useWatermarkCanvas";
+import buttons from "../../styles/buttons.module.css";
 
 const THUMBNAIL_MAX_SIZE = 400;
 
@@ -53,7 +54,11 @@ export function ExportButton({ state }: ExportButtonProps) {
   }
 
   return (
-    <button onClick={handleExport} disabled={!state.image || exporting}>
+    <button
+      className={`${buttons.btn} ${buttons.btnPrimary}`}
+      onClick={handleExport}
+      disabled={!state.image || exporting}
+    >
       {exporting ? "Exporting…" : "Download"}
     </button>
   );

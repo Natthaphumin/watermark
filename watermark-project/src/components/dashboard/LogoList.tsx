@@ -1,5 +1,7 @@
 import type { Logo } from "../../types/watermark";
+import buttons from "../../styles/buttons.module.css";
 import styles from "./Dashboard.module.css";
+import { EmptyState } from "./EmptyState";
 
 interface LogoListProps {
   logos: Logo[];
@@ -7,7 +9,13 @@ interface LogoListProps {
 }
 
 export function LogoList({ logos, onDelete }: LogoListProps) {
-  if (logos.length === 0) return <p className={styles.empty}>No saved logos yet.</p>;
+  if (logos.length === 0)
+    return (
+      <EmptyState
+        title="No logos yet"
+        description="Upload a logo in the editor and save it here to reuse it across your photos."
+      />
+    );
 
   return (
     <div className={styles.list}>
@@ -16,7 +24,12 @@ export function LogoList({ logos, onDelete }: LogoListProps) {
           <img className={styles.thumb} src={logo.url} alt={logo.originalName} />
           <div className={styles.itemMeta}>{logo.originalName}</div>
           <div className={styles.itemActions}>
-            <button onClick={() => onDelete(logo.id)}>Delete</button>
+            <button
+              className={`${buttons.btn} ${buttons.btnDanger} ${buttons.btnSmall}`}
+              onClick={() => onDelete(logo.id)}
+            >
+              Delete
+            </button>
           </div>
         </div>
       ))}

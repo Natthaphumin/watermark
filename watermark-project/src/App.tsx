@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Navbar } from "./components/layout/Navbar";
+import { BottomNav } from "./components/layout/BottomNav";
 import { ProtectedRoute } from "./components/layout/ProtectedRoute";
+import { Topbar } from "./components/layout/Topbar";
 import { DashboardPage } from "./pages/DashboardPage";
 import { EditorPage } from "./pages/EditorPage";
 import { HomePage } from "./pages/HomePage";
@@ -11,7 +12,7 @@ import { RegisterPage } from "./pages/RegisterPage";
 function App() {
   return (
     <div className="app-shell">
-      <Navbar />
+      <Topbar />
       <main className="app-main">
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -28,6 +29,7 @@ function App() {
           />
         </Routes>
       </main>
+      <BottomNav />
     </div>
   );
 }

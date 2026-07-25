@@ -1,0 +1,79 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  min-height: min(70svh, 640px);
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    flex-direction: row;
+    text-align: left;
+    gap: 56px;
+  }
+}
+
+.copy {
+  max-width: 480px;
+}
+
+.cta {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .cta {
+    justify-content: flex-start;
+  }
+}
+
+.mockup {
+  flex-shrink: 0;
+  width: min(100%, 340px);
+}
+
+.mockupPhoto {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  background: linear-gradient(160deg, #2d1b69 0%, #8b3bff 45%, #47bfff 80%, #7dd8ff 100%);
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.45);
+  transform: rotate(-3deg);
+  overflow: hidden;
+}
+
+.mockupSun {
+  position: absolute;
+  top: 18%;
+  right: 20%;
+  width: 22%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff8e7 0%, rgba(255, 248, 231, 0.4) 60%, transparent 100%);
+}
+
+.mockupText {
+  position: absolute;
+  left: 8%;
+  bottom: 14%;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+}
+
+.mockupLogo {
+  position: absolute;
+  right: 8%;
+  bottom: 10%;
+  width: 15%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  background: var(--gradient-primary);
+  opacity: 0.85;
+}

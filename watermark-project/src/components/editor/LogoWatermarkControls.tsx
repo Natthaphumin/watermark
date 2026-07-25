@@ -1,4 +1,6 @@
+import { useRef, useState } from "react";
 import type { Logo, LogoWatermarkConfig } from "../../types/watermark";
+import buttons from "../../styles/buttons.module.css";
 import styles from "./Controls.module.css";
 
 interface LogoWatermarkControlsProps {
@@ -16,6 +18,9 @@ export function LogoWatermarkControls({
   savedLogos,
   onSelectSavedLogo,
 }: LogoWatermarkControlsProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [fileName, setFileName] = useState<string | null>(null);
+
   return (
     <div className={styles.section}>
       <label className={styles.header}>
@@ -31,12 +36,24 @@ export function LogoWatermarkControls({
         <>
           <div className={styles.row}>
             <label>Upload PNG</label>
+            <button
+              type="button"
+              className={`${buttons.btn} ${buttons.btnSecondary} ${buttons.btnSmall}`}
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {fileName ?? "Choose file"}
+            </button>
             <input
+              ref={fileInputRef}
               type="file"
               accept="image/png"
+              style={{ display: "none" }}
               onChange={(e) => {
                 const file = e.target.files?.[0];
-                if (file) onFileSelected(file);
+                if (file) {
+                  onFileSelected(file);
+                  setFileName(file.name);
+                }
                 e.target.value = "";
               }}
             />

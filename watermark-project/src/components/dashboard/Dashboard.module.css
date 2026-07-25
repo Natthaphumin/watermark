@@ -30,9 +30,10 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
+  background: var(--bg-alt);
 }
 
 .itemName {
@@ -56,8 +57,8 @@
   width: 48px;
   height: 48px;
   object-fit: contain;
-  background: var(--bg-alt);
-  border-radius: 6px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
 }
 
 .grid {
@@ -68,26 +69,61 @@
 
 .gridItem {
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 8px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  background: var(--bg-alt);
 }
 
 .gridThumb {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
-  border-radius: 6px;
-  background: var(--bg-alt);
-}
-
-.empty {
-  color: var(--text);
-  font-size: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
 }
 
 .loadMore {
+  margin-top: 12px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 56px 24px;
+  min-height: 40vh;
+  justify-content: center;
+}
+
+.emptyIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background: var(--accent-bg);
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.emptyTitle {
+  font-weight: 600;
+  color: var(--text-h);
+  font-size: 16px;
+}
+
+.emptyDescription {
+  color: var(--text);
+  font-size: 14px;
+  max-width: 320px;
+}
+
+.emptyCta {
   margin-top: 12px;
 }

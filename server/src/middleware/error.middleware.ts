@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { Prisma } from "@prisma/client";
+import { MulterError } from "multer";
 import { ZodError } from "zod";
 
 export class HttpError extends Error {
@@ -29,6 +30,11 @@ export function errorMiddleware(
 
   if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
     res.status(409).json({ error: "A record with these unique fields already exists" });
+    return;
+  }
+
+  if (err instanceof MulterError) {
+    res.status(400).json({ error: err.message });
     return;
   }
 

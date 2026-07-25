@@ -1,0 +1,121 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: watermark
+          POSTGRES_PASSWORD: watermark
+          POSTGRES_DB: watermark
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U watermark"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: server
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: server/package-lock.json
+      - run: npm ci
+      - name: Write test env
+        run: |
+          cat <<EOF > .env.test
+          DATABASE_URL=postgresql://watermark:watermark@localhost:5432/watermark_test?schema=public
+          JWT_SECRET=ci-only-secret-not-for-prod
+          PORT=4001
+          CLIENT_ORIGIN=http://localhost:5173
+          COOKIE_NAME=watermark_token
+          NODE_ENV=test
+          UPLOADS_DIR=./uploads-test
+          EOF
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+
+  frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: watermark-project
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: watermark-project/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: [backend, frontend]
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: watermark
+          POSTGRES_PASSWORD: watermark
+          POSTGRES_DB: watermark
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U watermark"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Start backend
+        working-directory: server
+        run: |
+          npm ci
+          cat <<EOF > .env
+          DATABASE_URL=postgresql://watermark:watermark@localhost:5432/watermark?schema=public
+          JWT_SECRET=ci-only-secret-not-for-prod
+          PORT=4000
+          CLIENT_ORIGIN=http://localhost:5173
+          COOKIE_NAME=watermark_token
+          NODE_ENV=development
+          EOF
+          npx prisma migrate deploy
+          npm run dev &
+          npx wait-on http://localhost:4000/api/health
+
+      - name: Run e2e tests
+        working-directory: watermark-project
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          npm run test:e2e
+
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: watermark-project/playwright-report/
+          retention-days: 7

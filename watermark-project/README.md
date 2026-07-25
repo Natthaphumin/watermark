@@ -4,6 +4,10 @@ React + TypeScript + Vite app for the watermark editor: upload a photo, add a te
 watermark on a `<canvas>`, drag it into place, and download the result. Talks to the API in
 `../server`.
 
+Installable as a PWA (`vite-plugin-pwa`) — the editor (upload/watermark/drag/download) works
+fully offline once loaded, since watermarking never leaves the browser. Presets/logos/history
+still need a network connection, since those live on the backend.
+
 ## Development
 
 ```bash

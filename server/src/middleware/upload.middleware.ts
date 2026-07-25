@@ -3,9 +3,13 @@ import { mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import multer from "multer";
+import { env } from "../config/env.js";
+import { HttpError } from "./error.middleware.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-export const uploadsRoot = path.join(__dirname, "../../uploads");
+export const uploadsRoot = env.UPLOADS_DIR
+  ? path.resolve(env.UPLOADS_DIR)
+  : path.join(__dirname, "../../uploads");
 export const logosDir = path.join(uploadsRoot, "logos");
 export const thumbnailsDir = path.join(uploadsRoot, "thumbnails");
 
@@ -29,7 +33,7 @@ export const logoUpload = multer({
   limits: { fileSize: 2 * 1024 * 1024 },
   fileFilter: (_req, file, cb) => {
     if (file.mimetype !== "image/png") {
-      cb(new Error("Only PNG logos are supported"));
+      cb(new HttpError(400, "Only PNG logos are supported"));
       return;
     }
     cb(null, true);
@@ -41,7 +45,7 @@ export const thumbnailUpload = multer({
   limits: { fileSize: 500 * 1024 },
   fileFilter: (_req, file, cb) => {
     if (!extForMimetype[file.mimetype]) {
-      cb(new Error("Only JPEG or PNG thumbnails are supported"));
+      cb(new HttpError(400, "Only JPEG or PNG thumbnails are supported"));
       return;
     }
     cb(null, true);
