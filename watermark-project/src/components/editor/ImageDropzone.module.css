@@ -1,0 +1,19 @@
+.dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  color: var(--text);
+  background: var(--bg-alt);
+}
+
+.dropzone:hover,
+.dropzone.active {
+  border-color: var(--accent-border);
+  background: var(--accent-bg);
+}
+
+.input {
+  display: none;
+}

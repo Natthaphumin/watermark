@@ -1,0 +1,22 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  background: var(--bg-alt);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.canvas {
+  max-width: 100%;
+  height: auto;
+  touch-action: none;
+  border-radius: 4px;
+}
+
+.canvas.draggable {
+  cursor: grab;
+}
+
+.canvas.dragging {
+  cursor: grabbing;
+}

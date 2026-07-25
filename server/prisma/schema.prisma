@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  passwordHash String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  logos        Logo[]
+  presets      Preset[]
+  history      HistoryItem[]
+}
+
+model Logo {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filename     String
+  originalName String
+  url          String
+  createdAt    DateTime @default(now())
+  presets      Preset[]
+
+  @@index([userId])
+}
+
+model Preset {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name   String
+
+  textContent   String?
+  textFont      String?
+  textColor     String?
+  textSize      Int?
+  textOpacity   Float?
+  textRotation  Float?
+  textPositionX Float?
+  textPositionY Float?
+
+  logoId        String?
+  logo          Logo?   @relation(fields: [logoId], references: [id], onDelete: SetNull)
+  logoScale     Float?
+  logoOpacity   Float?
+  logoPositionX Float?
+  logoPositionY Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, name])
+  @@index([userId])
+  @@index([logoId])
+}
+
+model HistoryItem {
+  id                String   @id @default(cuid())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  thumbnailFilename String
+  thumbnailUrl      String
+  createdAt         DateTime @default(now())
+
+  @@index([userId])
+}
