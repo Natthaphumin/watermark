@@ -14,7 +14,7 @@ export class HttpError extends Error {
 
 export function errorMiddleware(
   err: unknown,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction,
 ) {
@@ -38,6 +38,6 @@ export function errorMiddleware(
     return;
   }
 
-  console.error(err);
+  req.log.error({ err }, "Unhandled error");
   res.status(500).json({ error: "Internal server error" });
 }
