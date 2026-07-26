@@ -16,6 +16,7 @@ export function Topbar() {
   return (
     <header className={styles.topbar}>
       <Link to="/" className={styles.brand}>
+        <img src="/favicon.svg" alt="" className={styles.logo} />
         Watermark
       </Link>
 
